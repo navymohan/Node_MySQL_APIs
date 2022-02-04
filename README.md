@@ -1,1 +1,1 @@
-This repo contains the apis in proper structure.
+This repo contains the APIs in proper structure.
