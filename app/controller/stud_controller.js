@@ -12,47 +12,47 @@ exports.allStudents = (req, res) => {
 
 // Delete a student with given id in the request
 exports.deleteStudentById = (req, res) => {
-    Student.deleteStudentById(req.params.id, (err, rows) => {
+    Student.deleteStudentById(req.params.studentId, (err, rows) => {
         if(err){
             if(err.kind == "not_found"){
-                res.status(404).send({message: "No student is found with id " + req.params.id});
+                res.status(404).send({message: "No student is found with id " + req.params.studentId});
             }
             else{
                 res.status(500).send({message: err.message || "Some unexpected error occured."});
             }
         }
         else
-            res.send({message: "Student is deleted successfully with id " + req.params.id});
+            res.send({message: "Student is deleted successfully with id " + req.params.studentId});
     });
 };
 
 // Create and save a new student
 exports.addStudent = (req,res) => {
-    let stud = req.body;
-    Student.addStudent(stud, (err,rows) => {
+    let studentBody = req.body;
+    Student.addStudent(studentBody, (err,rows) => {
         if(err){
             res.status(500).send({message: err.message || "Some unexpected error occured."});
         }
         else{
-            res.send({message: "Student is inserted successfully with id " + stud.s_id});
+            res.send({message: "Student is inserted successfully with id " + studentBody.s_id});
         }
     });
 };
 
 // Update a student identified by the id in the request
 exports.updateStudentById = (req,res) => {
-    let stud = req.body;
-    Student.updateStudentById(stud, req.params.id, (err, rows) =>{
+    let studentBody = req.body;
+    Student.updateStudentById(studentBody, req.params.studentId, (err, rows) =>{
         if(err){
             if(err.kind == "not_found"){
-                res.status(404).send({message: "No student is found with id " + req.params.id});
+                res.status(404).send({message: "No student is found with id " + req.params.studentId});
             }
             else{
                 res.status(500).send({message: err.message || "Some unexpected error occured."});
             }
         }
         else{
-            res.send({message: "Student is updated successfully with id " + req.params.id});
+            res.send({message: "Student is updated successfully with id " + req.params.studentId});
         }
     });
 };

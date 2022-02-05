@@ -2,14 +2,14 @@ module.exports = app => {
     const student = require("../controller/stud_controller.js");
 
     // Retrieve all students
-    app.get("/student", student.allStudents);
+    app.get("/students", student.allStudents);
 
     // Delete a student with given id
-    app.delete("/student/:id",student.deleteStudentById);
+    app.delete("/students/:studentId",student.deleteStudentById);
 
     // Create a new student
-    app.post("/student",student.addStudent);
+    app.post("/students",student.addStudent);
 
     // Update a student with given id
-    app.put("/student/:id",student.updateStudentById);
+    app.put("/students/:studentId",student.updateStudentById);
 }

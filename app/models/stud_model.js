@@ -23,8 +23,8 @@ Student.allStudents = result => {
 };
 
 // Query for deleting a particular student
-Student.deleteStudentById = (id, result) => {
-    sql.query('delete from s_details where s_id = ?', id, (err, rows) => {
+Student.deleteStudentById = (studentId, result) => {
+    sql.query('delete from s_details where s_id = ?', studentId, (err, rows) => {
         if(err){
             console.log("error: ", err);
             result(err,null);
@@ -36,44 +36,44 @@ Student.deleteStudentById = (id, result) => {
             return;
         }
         else{
-            console.log('deleted student with id: ',id);
+            console.log('deleted student with id: ',studentId);
             result(null, rows);
         }
     });
 };
 
 // Query for creating and inserting a new student
-Student.addStudent = (stud, result) => {
+Student.addStudent = (studentBody, result) => {
     // let stud = req.body;
-    sql.query('insert into s_details values (?, ?, ?)',[stud.s_id,stud.s_name,stud.s_class], (err,rows)=> {
+    sql.query('insert into s_details values (?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class], (err,rows)=> {
         if(err){
             console.log("error: ", err);
             result(err, null);
             return;
         }
         else{
-            console.log('inserted student with id: ', stud.s_id);
+            console.log('inserted student with id: ', studentBody.s_id);
             result(null, rows);
         }
     });
 };
 
 // Query for updating a particular student
-Student.updateStudentById = (stud, id, result) => {
-    let updatePayload = '';
-    // Means if provided in the json format in postman
-    if(stud.s_id){
-        updatePayload += `s_id = '${stud.s_id}',`;
+Student.updateStudentById = (studentBody, studentId, result) => {
+    let updateRequirement = '';
+    // Check if provided in the json format in postman
+    if(studentBody.s_id){
+        updateRequirement += `s_id = '${studentBody.s_id}',`;
     }
-    if(stud.s_name){
-        updatePayload += `s_name = '${stud.s_name}',`;
+    if(studentBody.s_name){
+        updateRequirement += `s_name = '${studentBody.s_name}',`;
     }
-    if(stud.s_class){
-        updatePayload += `s_class = '${stud.s_class}',`;
+    if(studentBody.s_class){
+        updateRequirement += `s_class = '${studentBody.s_class}',`;
     }
     // Removing last character from the string updatePayload
-    updatePayload = updatePayload.substring(0, updatePayload.length-1);
-    const mySqlQuery = "update s_details set " + updatePayload + " where s_id = " + id;
+    updateRequirement = updateRequirement.substring(0, updateRequirement.length-1);
+    const mySqlQuery = "update s_details set " + updateRequirement + " where s_id = " + studentId;
     sql.query(mySqlQuery, [], (err,rows)=> {
         if(err){
             console.log("error: ", err);
@@ -86,7 +86,7 @@ Student.updateStudentById = (stud, id, result) => {
             return;
         }
         else{
-            console.log("updated student with id: ", id);
+            console.log("updated student with id: ", studentId);
             result(null, rows);
         }
     });
