@@ -22,6 +22,28 @@ Student.allStudents = result => {
     });
 };
 
+// Query for retrieving a student with given id
+Student.getStudentById = (studentId, result) => {
+    sql.query('select * from s_details where s_id = ?', studentId, (err, rows)=>{
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        if(rows.length){
+            console.log("found the student: ", rows[0]);
+            result(null, rows[0]);
+            return;
+        }
+        // Student not found
+        else{
+            console.log("student not found.");
+            result({kind: "not_found"}, null);
+            return;
+        }
+    });
+};
+
 // Query for deleting a particular student
 Student.deleteStudentById = (studentId, result) => {
     sql.query('delete from s_details where s_id = ?', studentId, (err, rows) => {
@@ -46,12 +68,7 @@ Student.deleteStudentById = (studentId, result) => {
 Student.addStudent = (studentBody, result) => {
     // let stud = req.body;
     sql.query('insert into s_details values (?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class], (err,rows)=> {
-        if(!studentBody.s_class || !studentBody.s_name){
-            console.log("error: body can't be empty");
-            result({kind: "empty_body"},null);
-            return;
-        }
-        else if(err){
+        if(err){
             console.log("error: ", err);
             result(err, null);
             return;
@@ -75,11 +92,6 @@ Student.updateStudentById = (studentBody, studentId, result) => {
     }
     if(studentBody.s_class){
         updateRequirement += `s_class = '${studentBody.s_class}',`;
-    }
-    if(updateRequirement.length == 0){
-        console.log("error: No update values are provided.");
-        result({kind: "empty_body"},null);
-        return;
     }
     // Removing last character from the string updatePayload
     updateRequirement = updateRequirement.substring(0, updateRequirement.length-1);

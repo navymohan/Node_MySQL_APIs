@@ -4,6 +4,9 @@ module.exports = app => {
     // Retrieve all students
     app.get("/students", student.allStudents);
 
+    // Retrieve a student with given id
+    app.get("/students/:studentId", student.getStudentById);
+
     // Delete a student with given id
     app.delete("/students/:studentId",student.deleteStudentById);
 
