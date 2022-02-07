@@ -1,12 +1,17 @@
 const Student = require("../models/stud_model.js");
+const responseGetData = require("../utility/response.js")
+const responseDeleteStudent = require("../utility/response.js")
+const responseCreateStudent = require("../utility/response.js")
+const responseUpdateStudent = require("../utility/response.js")
 
 // Retrieve all students from the database
 exports.allStudents = (req, res) => {
     Student.allStudents((err, rows) => {
         if(err)
             res.status(500).send({message: err.message || "Some unexpected error occured while retieving."});
-        else
-            res.send(rows);
+        else{
+            responseGetData.responseGetData(res, rows);
+        }
     });
 };
 
@@ -21,8 +26,9 @@ exports.deleteStudentById = (req, res) => {
                 res.status(500).send({message: err.message || "Some unexpected error occured."});
             }
         }
-        else
-            res.send({message: "Student is deleted successfully with id " + req.params.studentId});
+        else{
+            responseDeleteStudent.responseDeleteStudent(res, req.params.studentId);
+        }
     });
 };
 
@@ -34,7 +40,7 @@ exports.addStudent = (req,res) => {
             res.status(500).send({message: err.message || "Some unexpected error occured."});
         }
         else{
-            res.send({message: "Student is inserted successfully with id " + studentBody.s_id});
+            responseCreateStudent.responseCreateStudent(res);
         }
     });
 };
@@ -52,7 +58,7 @@ exports.updateStudentById = (req,res) => {
             }
         }
         else{
-            res.send({message: "Student is updated successfully with id " + req.params.studentId});
+            responseUpdateStudent.responseUpdateStudent(res,req.params.studentId);
         }
     });
 };
