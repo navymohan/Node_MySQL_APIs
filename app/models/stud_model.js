@@ -46,7 +46,12 @@ Student.deleteStudentById = (studentId, result) => {
 Student.addStudent = (studentBody, result) => {
     // let stud = req.body;
     sql.query('insert into s_details values (?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class], (err,rows)=> {
-        if(err){
+        if(!studentBody.s_class || !studentBody.s_name){
+            console.log("error: body can't be empty");
+            result({kind: "empty_body"},null);
+            return;
+        }
+        else if(err){
             console.log("error: ", err);
             result(err, null);
             return;
@@ -70,6 +75,11 @@ Student.updateStudentById = (studentBody, studentId, result) => {
     }
     if(studentBody.s_class){
         updateRequirement += `s_class = '${studentBody.s_class}',`;
+    }
+    if(updateRequirement.length == 0){
+        console.log("error: No update values are provided.");
+        result({kind: "empty_body"},null);
+        return;
     }
     // Removing last character from the string updatePayload
     updateRequirement = updateRequirement.substring(0, updateRequirement.length-1);

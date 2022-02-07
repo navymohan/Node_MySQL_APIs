@@ -35,8 +35,16 @@ exports.deleteStudentById = (req, res) => {
 // Create and save a new student
 exports.addStudent = (req,res) => {
     let studentBody = req.body;
+    // validation of request
+    if(!studentBody){
+        res.status(400).send({message: "The field data can't be empty"});
+        return;
+    }
     Student.addStudent(studentBody, (err,rows) => {
-        if(err){
+        if(err.kind == "empty_body"){
+            res.status(400).send({message: "The field data can't be empty"});
+        }
+        else if(err){
             res.status(500).send({message: err.message || "Some unexpected error occured."});
         }
         else{
@@ -52,6 +60,9 @@ exports.updateStudentById = (req,res) => {
         if(err){
             if(err.kind == "not_found"){
                 res.status(404).send({message: "No student is found with id " + req.params.studentId});
+            }
+            else if(err.kind == "empty_body"){
+                res.status(400).send({message: "The field data can't be empty"});
             }
             else{
                 res.status(500).send({message: err.message || "Some unexpected error occured."});
