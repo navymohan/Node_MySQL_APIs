@@ -67,7 +67,7 @@ Student.deleteStudentById = (studentId, result) => {
 // Query for creating and inserting a new student
 Student.addStudent = (studentBody, result) => {
     // let stud = req.body;
-    sql.query('insert into s_details values (?, ?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class,studentBody.mobNo], (err,rows)=> {
+    sql.query('insert into s_details values (?, ?, ?, ?, ?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class,studentBody.mobNo, studentBody.email, studentBody.DOB, studentBody.password], (err,rows)=> {
         if(err){
             console.log("error: ", err);
             result(err, null);
@@ -95,6 +95,15 @@ Student.updateStudentById = (studentBody, studentId, result) => {
     }
     if(studentBody.mobNo){
         updateRequirement += `mobNo = '${studentBody.mobNo}',`;
+    }
+    if(studentBody.email){
+        updateRequirement += `email = '${studentBody.email}',`;
+    }
+    if(studentBody.DOB){
+        updateRequirement += `DOB = '${studentBody.DOB}',`;
+    }
+    if(studentBody.password){
+        updateRequirement += `password = '${studentBody.password}',`;
     }
     // Removing last character from the string updatePayload
     updateRequirement = updateRequirement.substring(0, updateRequirement.length-1);
