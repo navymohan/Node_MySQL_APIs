@@ -50,22 +50,7 @@ exports.deleteStudentById = (req, res) => {
 };
 
 // Create and save a new student
-exports.addStudent = (req,res) => {
-    let studentBody = req.body;
-    // validation of request
-    if(studentBody  && Object.keys(studentBody).length === 0 && Object.getPrototypeOf(studentBody) === Object.prototype){
-        res.status(400).send({message: "The field data can't be empty"});
-        return;
-    }
-    if(!(studentBody && studentBody.s_name)){
-        return res.status(400).send({message: "There is some issue with the s_name field."});
-    }
-    if(!(studentBody && studentBody.s_class)){
-        return res.status(400).send({message: "There is some issue with the s_class field."});
-    }
-    if(!(studentBody && studentBody.mobNo)){
-        return res.status(400).send({message: "There is some issue with the mobNo field."});
-    }
+exports.addStudent = (studentBody, req, res) => {
     Student.addStudent(studentBody, (err,rows) => {
         if(err){
             res.status(500).send({message: err.message || "Some unexpected error occured."});
@@ -77,18 +62,7 @@ exports.addStudent = (req,res) => {
 };
 
 // Update a student identified by the id in the request
-exports.updateStudentById = (req,res) => {
-    let studentBody = req.body;
-    // validation of request
-    if(studentBody  && Object.keys(studentBody).length === 0 && Object.getPrototypeOf(studentBody) === Object.prototype){
-        res.status(400).send({message: "All the fields can't be empty"});
-        return;
-    }
-    if(studentBody  && Object.keys(studentBody).length === 1 && Object.getPrototypeOf(studentBody) === Object.prototype){
-        if(!studentBody.s_class && !studentBody.s_name && !studentBody.mobNo){
-            return res.status(400).send({message: "There is some issue with the fields."});
-        }
-    }
+exports.updateStudentById = (studentBody, req,res) => {
     Student.updateStudentById(studentBody, req.params.studentId, (err, rows) =>{
         if(err){
             if(err.kind == "not_found"){

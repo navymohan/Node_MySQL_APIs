@@ -1,5 +1,5 @@
 module.exports = app => {
-    const student = require("../controller/studentAssembly/stud_controller.js");
+    const student = require("../controller/studentAssembly/index.js");
 
     // Retrieve all students
     app.get("/students", student.allStudents);

@@ -93,6 +93,9 @@ Student.updateStudentById = (studentBody, studentId, result) => {
     if(studentBody.s_class){
         updateRequirement += `s_class = '${studentBody.s_class}',`;
     }
+    if(studentBody.mobNo){
+        updateRequirement += `mobNo = '${studentBody.mobNo}',`;
+    }
     // Removing last character from the string updatePayload
     updateRequirement = updateRequirement.substring(0, updateRequirement.length-1);
     const mySqlQuery = "update s_details set " + updateRequirement + " where s_id = " + studentId;
