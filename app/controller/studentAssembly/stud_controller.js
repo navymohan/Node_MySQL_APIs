@@ -1,9 +1,9 @@
-const Student = require("../models/stud_model.js");
-const responseGetData = require("../utility/response.js")
-const responseStudentById = require("../utility/response.js")
-const responseDeleteStudent = require("../utility/response.js")
-const responseCreateStudent = require("../utility/response.js")
-const responseUpdateStudent = require("../utility/response.js")
+const Student = require("../../models/stud_model.js");
+const responseGetData = require("../../utility/response.js")
+const responseStudentById = require("../../utility/response.js")
+const responseDeleteStudent = require("../../utility/response.js")
+const responseCreateStudent = require("../../utility/response.js")
+const responseUpdateStudent = require("../../utility/response.js")
 
 // Retrieve all students from the database
 exports.allStudents = (req, res) => {
@@ -63,6 +63,9 @@ exports.addStudent = (req,res) => {
     if(!(studentBody && studentBody.s_class)){
         return res.status(400).send({message: "There is some issue with the s_class field."});
     }
+    if(!(studentBody && studentBody.mobNo)){
+        return res.status(400).send({message: "There is some issue with the mobNo field."});
+    }
     Student.addStudent(studentBody, (err,rows) => {
         if(err){
             res.status(500).send({message: err.message || "Some unexpected error occured."});
@@ -82,7 +85,7 @@ exports.updateStudentById = (req,res) => {
         return;
     }
     if(studentBody  && Object.keys(studentBody).length === 1 && Object.getPrototypeOf(studentBody) === Object.prototype){
-        if(!studentBody.s_class && !studentBody.s_name){
+        if(!studentBody.s_class && !studentBody.s_name && !studentBody.mobNo){
             return res.status(400).send({message: "There is some issue with the fields."});
         }
     }

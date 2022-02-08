@@ -11,12 +11,12 @@ const Student = function (student) {
 Student.allStudents = result => {
     sql.query('select * from s_details',(err, rows)=>{
         if(err){
-            console.log("error: ", err);
+            console.log("[Student model] [allStudents] error: ", err);
             result(err, null);
             return;
         }
         else{
-            console.log(rows);
+            console.log("[Student model] [allStudents] response: ", rows);
             result(null, rows);
         }
     });
@@ -67,14 +67,14 @@ Student.deleteStudentById = (studentId, result) => {
 // Query for creating and inserting a new student
 Student.addStudent = (studentBody, result) => {
     // let stud = req.body;
-    sql.query('insert into s_details values (?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class], (err,rows)=> {
+    sql.query('insert into s_details values (?, ?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class,studentBody.mobNo], (err,rows)=> {
         if(err){
             console.log("error: ", err);
             result(err, null);
             return;
         }
         else{
-            console.log('inserted student with id: ', studentBody.s_id);
+            console.log('successfully inserted new student');
             result(null, rows);
         }
     });
