@@ -4,6 +4,8 @@ const responseStudentById = require("../../utility/response.js")
 const responseDeleteStudent = require("../../utility/response.js")
 const responseCreateStudent = require("../../utility/response.js")
 const responseUpdateStudent = require("../../utility/response.js")
+const jwt = require("jsonwebtoken");
+const { signUp } = require("../../models/stud_model.js");
 
 // Retrieve all students from the database
 exports.allStudents = (req, res) => {
@@ -75,5 +77,48 @@ exports.updateStudentById = (studentBody, req,res) => {
         else{
             responseUpdateStudent.responseUpdateStudent(res,req.params.studentId);
         }
+    });
+};
+
+// For login an creating token
+exports.login = (studentBody, req, res) => {
+    Student.login(studentBody.email, (err, rows) => {
+        if(err){
+            if(err.kind == "not_found"){
+                res.status(404).send({message: "Invalid email or password"});
+            }
+            else
+                res.status(500).send({message: err.message || "Some unexpected error occured while retieving."});
+        }
+        if(studentBody.password == rows.password){
+            rows.password = undefined;
+            const jsontoken = jwt.sign({result: rows}, "paisabazaar", {expiresIn: "1h"});
+            return res.send({
+                "status": true,
+                "message": "Logged in successfully.",
+                "token": jsontoken
+            });
+        }
+        else{
+            return res.send({
+                "status": false,
+                "message": "Invalid email or password"
+            })
+        }
+    });
+};
+
+exports.signUp = (studentBody, req, res) => {
+    Student.signUp(studentBody, (err, rows) => {
+        if(err){
+            res.status(500).send({message: err.message || "Some unexpected error occured."});
+        }
+        const jsontoken = jwt.sign({result: rows}, "paisabazaar", {expiresIn: "1h"});
+        return res.send({
+            "status": true,
+            "message": "Signed Up successfully.",
+            "token": jsontoken
+        });
+        // responseCreateStudent.responseCreateStudent(res);
     });
 };

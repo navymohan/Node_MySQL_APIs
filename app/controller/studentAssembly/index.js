@@ -16,7 +16,7 @@ exports.deleteStudentById = (req, res) => {
     StudentController.deleteStudentById(req,res);
 }
 
-// To add a nnew student
+// To add a new student
 exports.addStudent = (req,res) => {
     let studentBody = req.body;
     // validation of request
@@ -34,4 +34,18 @@ exports.updateStudentById = (req, res) => {
         StudentController.updateStudentById(studentBody, req, res);
     }
     else return;
+}
+
+// For login
+exports.login = (req, res) => {
+    let studentBody = req.body;
+    StudentController.login(studentBody, req, res);
+}
+
+// For signUp
+exports.signUp = (req, res) => {
+    let studentBody = req.body;
+    if(validationStudent.validationAddStudent(studentBody, res)){
+        StudentController.signUp(studentBody, req, res);
+    }
 }

@@ -66,7 +66,6 @@ Student.deleteStudentById = (studentId, result) => {
 
 // Query for creating and inserting a new student
 Student.addStudent = (studentBody, result) => {
-    // let stud = req.body;
     sql.query('insert into s_details values (?, ?, ?, ?, ?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class,studentBody.mobNo, studentBody.email, studentBody.DOB, studentBody.password], (err,rows)=> {
         if(err){
             console.log("error: ", err);
@@ -120,7 +119,44 @@ Student.updateStudentById = (studentBody, studentId, result) => {
             return;
         }
         else{
-            console.log("updated student with id: ", studentId);
+            console.log("Updated student with id: ", studentId);
+            result(null, rows);
+        }
+    });
+};
+
+// Query for retrieving a student with given email
+Student.login = (studentEmail, result) => {
+    sql.query('select * from s_details where email = ?', studentEmail, (err, rows)=>{
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        if(rows.length){
+            console.log("Found the student");
+            result(null, rows[0]);
+            return;
+        }
+        // Student not found
+        else{
+            console.log("Student not found.");
+            result({kind: "not_found"}, null);
+            return;
+        }
+    });
+};
+
+// Query for inserting new student during signup
+Student.signUp = (studentBody, result) => {
+    sql.query('insert into s_details values (?, ?, ?, ?, ?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class,studentBody.mobNo, studentBody.email, studentBody.DOB, studentBody.password], (err,rows)=> {
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        else{
+            console.log('Successfully signed up.');
             result(null, rows);
         }
     });
