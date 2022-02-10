@@ -37,7 +37,26 @@ function responseUpdateStudent(res, id){
     res.send({
         "status": true,
         "message": `successfully updated student with id: ${id}`
-    })
+    });
+}
+
+// Response for login
+function responseLogin(studentBody, rows, res){
+    if(studentBody.password == rows.password){
+        rows.password = undefined;
+        const jsontoken = jwt.sign({result: rows}, "paisabazaar", {expiresIn: "1h"});
+        return res.send({
+            "status": true,
+            "message": "Logged in successfully.",
+            "token": jsontoken
+        });
+    }
+    else{
+        return res.send({
+            "status": false,
+            "message": "Invalid email or password"
+        });
+    }
 }
 
 module.exports.responseGetData = responseGetData;
@@ -45,3 +64,4 @@ module.exports.responseStudentById = responseStudentById;
 module.exports.responseDeleteStudent = responseDeleteStudent;
 module.exports.responseCreateStudent = responseCreateStudent;
 module.exports.responseUpdateStudent = responseUpdateStudent;
+module.exports.responseLogin = responseLogin;

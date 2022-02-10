@@ -4,6 +4,7 @@ const responseStudentById = require("../../utility/response.js")
 const responseDeleteStudent = require("../../utility/response.js")
 const responseCreateStudent = require("../../utility/response.js")
 const responseUpdateStudent = require("../../utility/response.js")
+const responseLogin = require("../../utility/response.js")
 const jwt = require("jsonwebtoken");
 const { signUp } = require("../../models/stud_model.js");
 
@@ -64,7 +65,7 @@ exports.addStudent = (studentBody, req, res) => {
 };
 
 // Update a student identified by the id in the request
-exports.updateStudentById = (studentBody, req,res) => {
+exports.updateStudentById = (studentBody, req, res) => {
     Student.updateStudentById(studentBody, req.params.studentId, (err, rows) =>{
         if(err){
             if(err.kind == "not_found"){
@@ -80,7 +81,7 @@ exports.updateStudentById = (studentBody, req,res) => {
     });
 };
 
-// For login an creating token
+// For login and creating token
 exports.login = (studentBody, req, res) => {
     Student.login(studentBody.email, (err, rows) => {
         if(err){
@@ -90,24 +91,13 @@ exports.login = (studentBody, req, res) => {
             else
                 res.status(500).send({message: err.message || "Some unexpected error occured while retieving."});
         }
-        if(studentBody.password == rows.password){
-            rows.password = undefined;
-            const jsontoken = jwt.sign({result: rows}, "paisabazaar", {expiresIn: "1h"});
-            return res.send({
-                "status": true,
-                "message": "Logged in successfully.",
-                "token": jsontoken
-            });
-        }
         else{
-            return res.send({
-                "status": false,
-                "message": "Invalid email or password"
-            })
+            responseLogin.responseLogin(studentBody, rows, res);
         }
     });
 };
 
+// For SignUp and creating token
 exports.signUp = (studentBody, req, res) => {
     Student.signUp(studentBody, (err, rows) => {
         if(err){
@@ -119,6 +109,5 @@ exports.signUp = (studentBody, req, res) => {
             "message": "Signed Up successfully.",
             "token": jsontoken
         });
-        // responseCreateStudent.responseCreateStudent(res);
     });
 };

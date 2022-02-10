@@ -11,7 +11,7 @@ module.exports = {
                     res.send({
                         "status": false,
                         "message": "Invalid token"
-                    })
+                    });
                 }
                 else{
                     next();
@@ -22,7 +22,7 @@ module.exports = {
             res.send({
                 "status": false,
                 "message": "Access denied"
-            })
+            });
         }
     }
 }

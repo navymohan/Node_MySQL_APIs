@@ -16,7 +16,9 @@ module.exports = app => {
     // Update a student with given id
     app.put("/students/:studentId", tokenAuthentication.checkToken, student.updateStudentById);
 
+    // Login
     app.post("/students/login", student.login);
 
+    // SignUp
     app.post("/students/signUp", student.signUp);
 }
