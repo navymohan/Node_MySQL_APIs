@@ -16,9 +16,16 @@ module.exports = app => {
     // Update a student with given id
     app.put("/students/:studentId", tokenAuthentication.checkToken, student.updateStudentById);
 
+<<<<<<< HEAD
     // Login for an existing student
     app.post("/students/login", student.login);
 
     // SignUp for a new student
+=======
+    // Login
+    app.post("/students/login", student.login);
+
+    // SignUp
+>>>>>>> 3e23861a4823f5e91080eb5856f80044a2c3343b
     app.post("/students/signUp", student.signUp);
 }

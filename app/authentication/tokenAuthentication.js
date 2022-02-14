@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
 
+<<<<<<< HEAD
 // Checking for correct token
+=======
+// Check for correct token
+>>>>>>> 3e23861a4823f5e91080eb5856f80044a2c3343b
 module.exports = {
     checkToken: (req, res, next) => {
         let token = req.get("authorization");

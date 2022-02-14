@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 const jwt = require("jsonwebtoken");
 
+=======
+>>>>>>> 3e23861a4823f5e91080eb5856f80044a2c3343b
 // Response for retrieving complete data of students
 function responseGetData(res, rows){
     res.send({
