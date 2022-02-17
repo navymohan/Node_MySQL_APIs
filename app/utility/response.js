@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 const jwt = require("jsonwebtoken");
 
-=======
->>>>>>> 3e23861a4823f5e91080eb5856f80044a2c3343b
 // Response for retrieving complete data of students
 function responseGetData(res, rows){
     res.send({
@@ -49,7 +46,7 @@ function responseUpdateStudent(res, id){
 function responseLogin(studentBody, rows, res){
     if(studentBody.password == rows.password){
         rows.password = undefined;
-        const jsontoken = jwt.sign({result: rows}, "paisabazaar", {expiresIn: "1h"});
+        const jsontoken = jwt.sign({payload: rows.s_id}, "paisabazaar", {expiresIn: "1h"});
         return res.send({
             "status": true,
             "message": "Logged in successfully.",

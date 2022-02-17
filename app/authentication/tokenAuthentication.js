@@ -14,7 +14,6 @@ module.exports = {
                     });
                 }
                 else{
-                    // Call the next function if no problem
                     next();
                 }
             })
