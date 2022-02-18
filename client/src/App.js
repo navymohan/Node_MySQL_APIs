@@ -3,116 +3,102 @@ import {useState} from 'react'
 import axios from 'axios';
 
 function App() {
-	const [formValue, setFormValue] = useState({
-		s_name: '',
-		s_class: '',
-		mobNo: '',
-		email: '',
-		DOB: '',
-		password: ''
-	});
+	const [s_name, setName] = useState("");
+	const [s_class, setClass] = useState("");
+	const [mobNo, setMob] = useState("");
+	const [email, setEmail] = useState("");
+	const [DOB, setDob] = useState();
+	const [password, setPassword] = useState("");
 
-	const setChange = (event) => {
-		setFormValue({
-			...formValue,
-			[event.target.name]: event.target.value
-		})
+	let checkVariable = false;
+
+	// const printData = () => {
+	// 	if(!checkVariable)
+	// 	console.log(s_name + s_class + mobNo + email + DOB + password);
+	// }
+
+	let regexForemail = /^([a-z\d\.-]+)@([a-z]+)\.([a-z]{2,5})(\.[a-z]{2,8})?$/;
+	let regexForMobileNumber = /^[6789]\d{9}$/;
+	let regexForDOB = /^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/]\d{4}$/;
+	// var regexForDOB = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
+	let regexForPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%&]).{8,16}$/;
+
+	function mobNoValidation(){
+		if(!regexForMobileNumber.test(mobNo)){
+			alert("Mobile number not in correct format");
+			checkVariable = true;
+		}
 	}
 
-	const sendData = async() => {
-		const filledData = new FormData();
-		filledData.append("s_name", formValue.s_name)
-		filledData.append("s_class", formValue.s_class)
-		filledData.append("mobNo", formValue.mobNo)
-		filledData.append("email", formValue.email)
-		filledData.append("DOB", formValue.DOB)
-		filledData.append("password", formValue.password)
-
-		try {
-			// making axios post request
-			const response = await axios({
-			  method: "post",
-			  url: "/stduents/signUp",
-			  data: filledData,
-			//   headers: { "Content-Type": "multipart/form-data" },
-			});
-		} catch(error) {
-			console.log(error)
+	function emailValidation(){
+		if(!regexForemail.test(email)){
+			alert("Email not in correct format");
+			checkVariable = true;
 		}
+	}
+
+	function passwordValidation(){
+		if(!regexForPassword.test(password)){
+			alert("Password not in correct format.")
+			checkVariable = true;
+		}
+	}
+
+	function dobValidation(){
+		if(!regexForDOB.test(DOB)){
+			alert("DOB not in correct format.")
+			checkVariable = true;
+		}
+	}
+
+	const signUpUser = () => {
+		axios.post("http://localhost:3002/students/signUp", {
+			s_name: s_name,
+			s_class: s_class, 
+			mobNo: mobNo, 
+			email: email, 
+			DOB: DOB, 
+			password: password
+		}).then(() => {
+			console.log("success");
+		})
 	}
 
   return (
     <div className="App">
-		<div className='dataForm'>
-			<form>
-				<table>
-					<tr>
-						<th><label>Name: </label></th>
-						<th><input 
-								type="text"
-								name='s_name'
-								onChange={setChange}
-							/>
-						</th>
-					</tr>
-					<tr>
-						<th><label>Class: </label></th>
-						<th><input 
-								type="text"
-								name='s_class'
-								onChange={setChange}
-							/>
-						</th>
-					</tr>
-					<tr>
-						<th><label>MobNo: </label></th>
-						<th><input 
-								type="text"
-								name='mobNo'
-								onChange={setChange}
-							/>
-						</th>
-					</tr>
-					<tr>
-						<th><label>Email: </label></th>
-						<th><input 
-								type='email'
-								name='email'
-								onChange={setChange}
-							/>
-						</th>
-					</tr>
-					<tr>
-						<th><label>DOB: </label></th>
-						<th><input 
-								type='date'
-								name='DOB'
-								className='dob'
-								onChange={setChange}
-							/>
-						</th>
-					</tr>
-					<tr>
-						<th><label>Password: </label></th>
-						<th><input 
-								type='password'
-								name='password'
-								onChange={setChange}
-							/>
-						</th>
-					</tr>
-					{/* <tr>
-						<th><label>Name: </label></th>
-						<th><input 
-								type="text"
-								name='Name'
-							/>
-						</th>
-					</tr> */}
-				</table>
-			</form>
+		<div className="studentData">
+			<label>Name: </label>
+			<input type="text" onChange={(event) => {
+				setName(event.target.value)
+			}}
+			/>
+			<label>Class: </label>
+			<input type="text" onChange={(event) => {
+				setClass(event.target.value)
+			}}
+			/>
+			<label>MobNo: </label>
+			<input type="text" onChange={(event) => {
+				setMob(event.target.value)
+			}} onBlur={mobNoValidation}
+			/>
+			<label>Email: </label>
+			<input type="email" onChange={(event) => {
+				setEmail(event.target.value)
+			}} onBlur={emailValidation}
+			/>
+			<label>DOB: </label>
+			<input type="text" onChange={(event) => {
+				setDob(event.target.value)
+			}} onBlur = {dobValidation}
+			/>
+			<label>Password: </label>
+			<input type="password" onChange={(event) => {
+				setPassword(event.target.value)
+			}} onBlur = {passwordValidation}
+			/>
+			<button className='submitButton' onClick={signUpUser}>SUBMIT</button>
 		</div>
-		<button type='submit' className="submitButton" onClick={sendData}>SUBMIT</button>
     </div>
   );
 }

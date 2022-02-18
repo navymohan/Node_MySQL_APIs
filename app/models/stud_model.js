@@ -152,12 +152,12 @@ Student.signUp = (studentBody, result) => {
     sql.query('insert into s_details values (?, ?, ?, ?, ?, ?, ?)',[studentBody.s_id,studentBody.s_name,studentBody.s_class,studentBody.mobNo, studentBody.email, studentBody.DOB, studentBody.password], (err,rows)=> {
         if(err){
             console.log("error: ", err);
-            result(err, null);
+            result(err, null, null);
             return;
         }
         else{
             console.log('Successfully signed up.');
-            result(null, rows);
+            result(null, rows, studentBody.s_id);
         }
     });
 };

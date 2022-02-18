@@ -129,12 +129,11 @@ exports.login = (studentBody, req, res) => {
 
 // For SignUp and creating token
 exports.signUp = (studentBody, req, res) => {
-    Student.signUp(studentBody, (err, rows) => {
+    Student.signUp(studentBody, (err, rows, studentId) => {
         if(err){
             res.status(500).send({message: err.message || "Some unexpected error occured."});
         }
-        let payload = studentBody.s_id;
-        const jsontoken = jwt.sign(payload, "paisabazaar", {expiresIn: "1h"});
+        const jsontoken = jwt.sign({payload: rows.insertId}, "paisabazaar", {expiresIn: "1h"});
         return res.send({
             "status": true,
             "message": "Signed Up successfully.",
