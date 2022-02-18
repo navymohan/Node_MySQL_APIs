@@ -3,7 +3,7 @@ module.exports = app => {
     const tokenAuthentication = require("../authentication/tokenAuthentication.js")
     // Retrieve all students
     // app.get("/students", tokenAuthentication.checkToken, student.allStudents);
-    let studentId;
+    
     // Retrieve a student with given id
     app.get(`/students`, tokenAuthentication.checkToken, student.getStudentById);
 
