@@ -2,10 +2,9 @@ module.exports = app => {
     const student = require("../controller/studentAssembly/index.js");
     const tokenAuthentication = require("../authentication/tokenAuthentication.js")
     // Retrieve all students
-    app.get("/students", tokenAuthentication.checkToken, student.allStudents);
-
+    // app.get("/students", tokenAuthentication.checkToken, student.allStudents);
     // Retrieve a student with given id
-    // app.get(`/students`, tokenAuthentication.checkToken, student.getStudentById);
+    app.get("/students/:tokn", tokenAuthentication.checkToken, student.getStudentById);
 
     // Delete a student with given id
     app.delete("/students/:studentId", tokenAuthentication.checkToken, student.deleteStudentById);

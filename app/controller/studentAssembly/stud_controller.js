@@ -47,8 +47,9 @@ exports.allStudents = (req, res) => {
 // Retrieve a student with given id
 // Added redis
 exports.getStudentById = (req, res) => {
-    let bearerToken = req.get("authorization");
-    bearerToken = bearerToken.slice(7);
+    // let bearerToken = req.get("authorization");
+    let bearerToken = req.params.tokn;
+    // bearerToken = bearerToken.substr(7);
     decoded = jwt.verify(bearerToken, "paisabazaar");
     let id = decoded.payload;
     Student.getStudentById(id, (err, rows) => {
@@ -134,6 +135,9 @@ exports.signUp = (studentBody, req, res) => {
             res.status(500).send({message: err.message || "Some unexpected error occured."});
         }
         const jsontoken = jwt.sign({payload: rows.insertId}, "paisabazaar", {expiresIn: "1h"});
+        // const {id, token} = this.state;
+        // localStorage.setItem('id', rows.insertId);
+        // localStorage.setItem('token', jsontoken);
         return res.send({
             "status": true,
             "message": "Signed Up successfully.",
