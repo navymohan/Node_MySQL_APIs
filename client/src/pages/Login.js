@@ -1,9 +1,8 @@
 import '../App.css';
 import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
 import axios from 'axios';
 
-function Login() {
+function Login(props) {
     const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -34,6 +33,7 @@ function Login() {
 			console.log("success", response.data.token);
 			localStorage.setItem('token', response.data.token);
 		})
+        props.history.push("/dashBoard");
 	}
 
     return (

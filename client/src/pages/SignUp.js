@@ -62,8 +62,10 @@ function SignUp(props) {
 			localStorage.setItem('token', response.data.token);
 		})
 		props.history.push('/dashBoard');
+	}
 
-
+	const loginHandler = () => {
+		props.history.push('/login');
 	}
 
     return (
@@ -99,11 +101,8 @@ function SignUp(props) {
                     setPassword(event.target.value)
                 }} onBlur = {passwordValidation}
                 />
-                <button className='submitButton' onClick={signUpUser} 
-					// onClick={ () => {
-					// history('/dashBoard');}
-					// }
-				>SUBMIT</button>
+                <button className='submitButton' onClick={signUpUser}>SUBMIT</button>
+				<button className='login' onClick={loginHandler}>LOGIN</button>
                 {/* localStorage.setItem('token', ) */}
             </div>
         </div>

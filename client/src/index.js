@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App.js';
 // import Login from './pages/Login.js'
-import SignUp from './pages/SignUp.js';
+// import SignUp from './pages/SignUp.js';
 // import DashBoard from './pages/DashBoard.js';
 import reportWebVitals from './reportWebVitals';
 import store from './state/store'
@@ -14,9 +14,9 @@ const AppWrapper = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppWrapper>
+    {/* <AppWrapper> */}
       <App />
-    </AppWrapper>
+    {/* </AppWrapper> */}
    </React.StrictMode>,
   document.getElementById('root')
 );
