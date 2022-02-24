@@ -1,38 +1,52 @@
 import '../App.css';
-// import {useState} from 'react'
+import { useState } from 'react';
 import axios from 'axios';
 // import React from 'react';
-let details = null;
+
 
 function DashBoard(props) {
 
-    // let details = null;
-    // function printdetails(){
-    //     if(){
-
-    //     }
-    // }
-
+    const [details, setDetails] = useState();
     const getDetails = () => {
         axios.get(`http://localhost:3002/students/${localStorage.getItem('token')}`).then((response)=> {
             console.log("success", response);
-            details = response;
+            setDetails(response);
+            console.log(response);
         }).catch((e) => {
         	console.log(e);
         })
         console.log(localStorage.getItem('token'));
-        // printdetails();
     }
 
     const logOut = () => {
         localStorage.removeItem('token');
-        props.history.push("/");
+        props.history.push("/login");
     }
 
     return (
         <div className='dashBoard'>
-            <button className='logOut' onClick={logOut}>Log Out</button>
             <button className='getDetails' onClick={getDetails}>Get your details</button>
+            <table>
+                <tr>
+                    <td>{details && details.data.data.s_id}</td>
+                </tr>
+                <tr>
+                    <td>{details && details.data.data.s_name}</td>
+                </tr>
+                <tr>
+                    <td>{details && details.data.data.s_class}</td>
+                </tr>
+                <tr>
+                    <td>{details && details.data.data.mobNo}</td>
+                </tr>
+                <tr>
+                    <td>{details && details.data.data.email}</td>
+                </tr>
+                <tr>
+                    <td>{details && details.data.data.DOB}</td>
+                </tr>
+            </table>
+            <button className='logOut' onClick={logOut}>Log Out</button>
         </div>
     );
 }
