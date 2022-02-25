@@ -6,11 +6,11 @@ module.exports = {
     checkToken: (req, res, next) => {
         // let token = req.get("authorization");
         let token = req.params.tokn;
-        console.log(token);
+        // console.log(token);
         // token = token.substr(7);
         console.log(token);
         if(token){
-            console.log('here');
+            // console.log('here');
             // token = token.slice(7);
             jwt.verify(token, "paisabazaar", (err, decoded) => {
                 if(err){

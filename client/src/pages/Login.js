@@ -9,31 +9,49 @@ function Login(props) {
     let regexForemail = /^([a-z\d\.-]+)@([a-z]+)\.([a-z]{2,5})(\.[a-z]{2,8})?$/;
 	let regexForPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%&]).{8,16}$/;
 
-    let checkVariable = false;
-
+    let emailExists = false, passwordExists = false;
     function emailValidation(){
-		if(!regexForemail.test(email)){
+		if(!regexForemail.test(email) || !email){
 			alert("Email not in correct format");
-			checkVariable = true;
+            emailExists = false;
 		}
+        else{
+            emailExists = true;
+        }
 	}
 
     function passwordValidation(){
 		if(!regexForPassword.test(password)){
-			alert("Password not in correct format.")
-			checkVariable = true;
+			alert("Password not in correct format.");
+            passwordExists = false;
 		}
+        else{
+            passwordExists = true;
+        }
 	}
 
     const loginUser = () => {
-		axios.post("http://localhost:3002/students/login", {
-			email: email,
-			password: password
-		}).then((response) => {
-			console.log("success", response.data.token);
-			localStorage.setItem('token', response.data.token);
-		})
-        props.history.push("/dashBoard");
+        emailValidation();
+        passwordValidation();
+        if(emailExists && passwordExists){
+            axios.post("http://localhost:3002/students/login", {
+                email: email,
+                password: password
+            }).then((response) => {
+                if(response.data.token === undefined){
+                    alert("Invalid email or password");
+                    props.history.push("/login");
+                }
+                else{
+                    console.log("success", response.data.token);
+                    localStorage.setItem('token', response.data.token);
+                    props.history.push("/dashBoard");
+                }
+            })
+        }
+        else{
+            alert("Please enter data in all the fields.");
+        }
 	}
 
     return (

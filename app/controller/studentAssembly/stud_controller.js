@@ -132,16 +132,23 @@ exports.login = (studentBody, req, res) => {
 exports.signUp = (studentBody, req, res) => {
     Student.signUp(studentBody, (err, rows, studentId) => {
         if(err){
-            res.status(500).send({message: err.message || "Some unexpected error occured."});
+            if(err.kind == "already_exists"){
+                // res.status(404).send({message: "Email already exists."});
+                return res.send({
+                    "status": false,
+                    "message": "Student already exists."
+                });
+            }
+            else
+                res.status(500).send({message: err.message || "Some unexpected error occured."});
         }
-        const jsontoken = jwt.sign({payload: rows.insertId}, "paisabazaar", {expiresIn: "1h"});
-        // const {id, token} = this.state;
-        // localStorage.setItem('id', rows.insertId);
-        // localStorage.setItem('token', jsontoken);
-        return res.send({
-            "status": true,
-            "message": "Signed Up successfully.",
-            "token": jsontoken
-        });
+        else {
+            const jsontoken = jwt.sign({payload: rows.insertId}, "paisabazaar", {expiresIn: "1h"});
+            return res.send({
+                "status": true,
+                "message": "Signed Up successfully.",
+                "token": jsontoken
+            });
+        }
     });
 };

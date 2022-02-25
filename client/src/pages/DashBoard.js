@@ -9,9 +9,9 @@ function DashBoard(props) {
     const [details, setDetails] = useState();
     const getDetails = () => {
         axios.get(`http://localhost:3002/students/${localStorage.getItem('token')}`).then((response)=> {
-            console.log("success", response);
+            // console.log("success", response);
             setDetails(response);
-            console.log(response);
+            console.log(details);
         }).catch((e) => {
         	console.log(e);
         })
