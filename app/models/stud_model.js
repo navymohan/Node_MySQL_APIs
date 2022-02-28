@@ -1,4 +1,6 @@
 const sql = require("../config/db.js");
+const async = require('async');
+// import waterfall from 'async/waterfall';
 
 // constructor
 const Student = function (student) {
@@ -147,7 +149,10 @@ Student.login = (studentEmail, result) => {
     });
 };
 
+// var isPaused = false;
+
 function emailResolve(email) {
+    // isPaused = true;
     return new Promise(resolve => {
         setTimeout(() => {
             sql.query("select * from s_details where email = ?", email, (err, rows) => {
@@ -166,6 +171,7 @@ function emailResolve(email) {
                 }
             })
         }, 1000);
+        // isPaused = false;
     });
 }
 
@@ -174,42 +180,76 @@ async function alreadyExistingCheck(email) {
 }
 
 // Query for inserting new student during signup
+// Student.signUp = (studentBody, result) => {
+//     // var check = false;
+//     const check = alreadyExistingCheck(studentBody.email);
+//       if (!check) {
+//         console.log("in if");
+//         sql.query('insert into s_details values (?, ?, ?, ?, ?, ?, ?)', [studentBody.s_id, studentBody.s_name, studentBody.s_class, studentBody.mobNo, studentBody.email, studentBody.DOB, studentBody.password], (err, rows) => {
+//             if (err) {
+//                 console.log("error: ", err);
+//                 result(err, null, null);
+//                 return;
+//             }
+//             else {
+//                 console.log('Successfully signed up.');
+//                 result(null, rows, studentBody.s_id);
+//             }
+//         });
+//     }
+//     else {
+//         console.log("in else");
+//         result({ kind: "already_exists" }, null, null);
+//         return;
+//     }
+//     //console.log(check);
+// };
+
+// Query for inserting new student during signup
 Student.signUp = (studentBody, result) => {
     // var check = false;
-    const check = alreadyExistingCheck(studentBody.email);
-    // sql.query("select * from s_details where email = ?", studentBody.email, (err, rows) => {
-    //     if(err){
-    //         console.log("error: ",err);
-    //     }
-    //     if(rows.length){
-    //         console.log("found");
-    //         check = true;
-    //     }
-    //     else{
-    //         console.log("not_found");
-    //         check = false;
-    //     }
-    // })
-
-    if (!check) {
-        console.log("in if");
-        sql.query('insert into s_details values (?, ?, ?, ?, ?, ?, ?)', [studentBody.s_id, studentBody.s_name, studentBody.s_class, studentBody.mobNo, studentBody.email, studentBody.DOB, studentBody.password], (err, rows) => {
-            if (err) {
-                console.log("error: ", err);
-                result(err, null, null);
-                return;
-            }
-            else {
-                console.log('Successfully signed up.');
-                result(null, rows, studentBody.s_id);
-            }
-        });
-    }
-    else {
-        console.log("in else");
-        result({ kind: "already_exists" }, null, null);
-        return;
-    }
+    async.waterfall([
+        function (callback) {
+            sql.query("select * from s_details where email = ?", studentBody.email, (err, rows, check) => {
+                if(err){
+                    console.log("error: ", err);
+                    check = false;
+                    callback(err, check);
+                }
+                if(rows.length){
+                    console.log("found");
+                    check = false;
+                    callback(null, check);
+                }
+                else{
+                    console.log("not_found");
+                    check = true;
+                    callback(null, check);
+                }
+            })
+        }
+    ], function (err, callback){
+        if(callback){
+            console.log("in if");
+            sql.query('insert into s_details values (?, ?, ?, ?, ?, ?, ?)', [studentBody.s_id, studentBody.s_name, studentBody.s_class, studentBody.mobNo, studentBody.email, studentBody.DOB, studentBody.password], (err, rows) => {
+                if(err){
+                    console.log("error: ", err);
+                    result(err, null, null);
+                    return;
+                }
+                else{
+                    console.log("Successfully signed up.");
+                    result(null, rows, studentBody.s_id);
+                    return;
+                }
+            });
+        }
+        else{
+            console.log("in else");
+            result({kind: "already_exists"}, null, null);
+            return;
+        }
+    });
     //console.log(check);
 };
 

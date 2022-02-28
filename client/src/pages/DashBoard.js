@@ -27,24 +27,26 @@ function DashBoard(props) {
         <div className='dashBoard'>
             <button className='getDetails' onClick={getDetails}>Get your details</button>
             <table>
-                <tr>
-                    <td>{details && details.data.data.s_id}</td>
-                </tr>
-                <tr>
-                    <td>{details && details.data.data.s_name}</td>
-                </tr>
-                <tr>
-                    <td>{details && details.data.data.s_class}</td>
-                </tr>
-                <tr>
-                    <td>{details && details.data.data.mobNo}</td>
-                </tr>
-                <tr>
-                    <td>{details && details.data.data.email}</td>
-                </tr>
-                <tr>
-                    <td>{details && details.data.data.DOB}</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>{details && details.data.data.s_id}</td>
+                    </tr>
+                    <tr>
+                        <td>{details && details.data.data.s_name}</td>
+                    </tr>
+                    <tr>
+                        <td>{details && details.data.data.s_class}</td>
+                    </tr>
+                    <tr>
+                        <td>{details && details.data.data.mobNo}</td>
+                    </tr>
+                    <tr>
+                        <td>{details && details.data.data.email}</td>
+                    </tr>
+                    <tr>
+                        <td>{details && details.data.data.DOB}</td>
+                    </tr>
+                </tbody>
             </table>
             <button className='logOut' onClick={logOut}>Log Out</button>
         </div>
