@@ -1,26 +1,16 @@
 import '../App.css';
 import {useState} from 'react'
-// import {useHistory} from 'react-router-dom'
 import axios from 'axios';
 import React from 'react';
 
 function SignUp(props) {
-    
-	// let history = useHistory();
 	const [s_name, setName] = useState("");
 	const [s_class, setClass] = useState("");
 	const [mobNo, setMob] = useState("");
 	const [email, setEmail] = useState("");
 	const [DOB, setDob] = useState();
-	// const [nameExists, setNameExists] = useState();
-	// const [classExists, setClassExists] = useState();
-	// const [mobNoExists, setMobNoExists] = useState();
-	// const [emailExists, setEmailExists] = useState();
-	// const [dobExists, setDobExists] = useState();
-	// const [passwordExists, setPasswordExists] = useState();
 	const [password, setPassword] = useState("");
 
-    // let checkVariable = false;
 	let nameExists = false, classExists = false, mobNoExists = false, emailExists = false,
 		passwordExists = false, dobExists = false;
 
@@ -33,13 +23,9 @@ function SignUp(props) {
 		if(!s_name){
 			// alert('Please enter you name');
 			nameExists = false;
-			// setNameExists(false);
 		}
 		else{
-			console.log("in else");
 			nameExists = true;
-			// setNameExists(true);
-			console.log(nameExists);
 		}
 	}
 
@@ -47,71 +33,81 @@ function SignUp(props) {
 		if(!s_class){
 			// alert('Please enter you class');
 			classExists = false;
-			// setClassExists(false);
 		}
 		else{
 			classExists = true;
-			// setClassExists(true);
 		}
 	}
 	
+	var mobCnt = 0;
 	function mobNoValidation(){
 		if(!regexForMobileNumber.test(mobNo) || !mobNo){
-			alert("Mobile number not in correct format");
+			if(mobCnt === 0){
+				alert("Mobile number not in correct format");
+				mobCnt += 1;
+			}
 			mobNoExists = false;
-			// setMobNoExists(false);
 		}
 		else{
 			mobNoExists = true;
-			// setMobNoExists(true);
 		}
 	}
 
+	var emailCnt = 0;
 	function emailValidation(){
 		if(!regexForemail.test(email) || !email){
-			alert("Email not in correct format");
+			if(emailCnt === 0){
+				alert("Email not in correct format");
+				emailCnt += 1;
+			}
 			emailExists = false;
-			// setEmailExists(false);
 		}
 		else{
 			emailExists = true;
-			// setEmailExists(true);
 		}
 	}
 
+	var passwordCnt = 0;
 	function passwordValidation(){
+		// var cnt = 0;
 		if(!regexForPassword.test(password) || !password){
-			alert("Password not in correct format.")
+			if(passwordCnt === 0){
+				alert("Password not in correct format.");
+				passwordCnt += 1;
+			}
 			passwordExists = false;
-			// setPasswordExists(false);
 		}
 		else{
 			passwordExists = true;
-			// setPasswordExists(true);
 		}
 	}
 
+	var dobCnt = 0;
 	function dobValidation(){
 		if(!regexForDOB.test(DOB) || !DOB){
-			alert("DOB not in correct format.")
+			if(dobCnt === 0){
+				alert("DOB not in correct format.");
+				dobCnt += 1;
+			}
 			dobExists = false;
-			// setDobExists(false);
 		}
 		else{
 			dobExists = true;
-			// setDobExists(true);
 		}
 	}
 
-	const signUpUser = () => {
+	function allCalls(){
 		nameValidation();
 		classValidation();
 		mobNoValidation();
 		passwordValidation();
 		emailValidation();
 		dobValidation();
+	}
+
+	const signUpUser = () => {
+		allCalls();
 		if(nameExists && classExists && mobNoExists && emailExists && dobExists && passwordExists){
-		// if(nameExists){
 			axios.post("http://localhost:3002/students/signUp", {
 				s_name: s_name,
 				s_class: s_class,
@@ -135,9 +131,10 @@ function SignUp(props) {
 		}
 		else{
 			console.log(nameExists, classExists, emailExists, mobNoExists, dobExists, passwordExists);
-			alert("Please enter data in all the fields.");
+			if(!mobCnt && !emailCnt && !dobCnt && !passwordCnt){
+				alert("Please fill all the fields.");	
+			}
 		}
-		// props.history.push('/dashBoard');
 	}
 
 	const loginHandler = () => {
@@ -179,10 +176,6 @@ function SignUp(props) {
                 />
                 <button className='submitButton' onClick={signUpUser}>SUBMIT</button>
 				<button className='login' onClick={loginHandler}>LOGIN</button>
-                {/* localStorage.setItem('token', ) */}
-				{/* <p>
-					{}
-				</p> */}
             </div>
         </div>
     );

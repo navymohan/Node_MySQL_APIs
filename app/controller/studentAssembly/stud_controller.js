@@ -133,7 +133,6 @@ exports.signUp = (studentBody, req, res) => {
     Student.signUp(studentBody, (err, rows, studentId) => {
         if(err){
             if(err.kind == "already_exists"){
-                // res.status(404).send({message: "Email already exists."});
                 return res.send({
                     "status": false,
                     "message": "Student already exists."
