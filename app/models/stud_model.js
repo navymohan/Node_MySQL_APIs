@@ -38,7 +38,7 @@ Student.getStudentById = (studentId, result) => {
         }
         // Student not found
         else {
-            console.log("student not found.");
+            console.log("Student not found.");
             result({ kind: "not_found" }, null);
             return;
         }
@@ -83,7 +83,7 @@ Student.addStudent = (studentBody, result) => {
 // Query for updating a particular student
 Student.updateStudentById = (studentBody, studentId, result) => {
     let updateRequirement = '';
-    // Check if provided in the json format in postman
+    // Check if provided in the json format
     if (studentBody.s_id) {
         updateRequirement += `s_id = '${studentBody.s_id}',`;
     }
