@@ -1,1 +1,1 @@
-This repo contains the APIs in proper structure.
+This repo contains a crud application with both backend and a very basic frontend.
